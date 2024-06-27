@@ -59,10 +59,13 @@
                         <small class="fa fa-shopping-bag text-body"></small>
                     </a>
                     <div style="padding-left: 20px;">
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                        <button type="button" id="btnEntrar" class="btn btn-primary" data-bs-toggle="modal"
                             data-bs-target="#loginModal">
                             Entrar
                         </button>
+                    </div>
+                    <div style="padding-left: 20px;">
+                        <button type="button" id="loggedInButtons" class="btn btn-danger" onclick="logout()">Logout</button>
                     </div>
                 </div>
             </div>
@@ -80,14 +83,13 @@
             <div class="row g-5 justify-content-center" style="padding-bottom: 20px;">
                 <div class="col-lg-7 col-md-12 wow fadeInUp" data-wow-delay="0.5s">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Pesquisar" aria-label="Pesquisar">
-                        <button class="btn btn-outline-secondary" type="button">Filtrar</button>
-                        <button class="btn btn-outline-primary" type="button" data-bs-toggle="modal"
-                            data-bs-target="#addProductModal">Adicionar</button>
+                        <input id="searchInput" type="text" class="form-control" placeholder="Pesquisar" aria-label="Pesquisar">
+                        <button id="btnFilter" class="btn btn-outline-secondary" type="button">Filtrar</button>
+                        <button class="btn btn-outline-primary" type="button" data-bs-toggle="modal" data-bs-target="#addProductModal">Adicionar</button>
                     </div>
                 </div>
-            </div>
-
+            </div>            
+    
             <div class="row g-5 justify-content-center">
                 <div class="col-lg-7 col-md-12 wow fadeInUp" data-wow-delay="0.5s">
                     <table class="table">
@@ -102,49 +104,15 @@
                                 <th scope="col"></th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Tomate Fresco</td>
-                                <td>Tomate Fresco</td>
-                                <td>R$ 19,00</td>
-                                <td>1000</td>
-                                <td>56</td>
-                                <td>
-                                    <button type="button" class="btn btn-link" data-bs-toggle="modal"
-                                        data-bs-target="#editProductModal">Detalhes</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Tomate Fresco</td>
-                                <td>Tomate Fresco</td>
-                                <td>R$ 19,00</td>
-                                <td>1000</td>
-                                <td>56</td>
-                                <td>
-                                    <button type="button" class="btn btn-link" data-bs-toggle="modal"
-                                        data-bs-target="#editProductModal">Detalhes</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>Tomate Fresco</td>
-                                <td>Tomate Fresco</td>
-                                <td>R$ 19,00</td>
-                                <td>1000</td>
-                                <td>56</td>
-                                <td>
-                                    <button type="button" class="btn btn-link" data-bs-toggle="modal"
-                                        data-bs-target="#editProductModal">Detalhes</button>
-                                </td>
-                            </tr>
+                        <tbody id="productTableBody">
+                            <!-- Aqui serão adicionados os produtos dinamicamente -->
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
+    
     <!-- Contact End -->
 
     <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
@@ -351,6 +319,7 @@
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
+    <script src="js/scripts.js"></script>
 </body>
 
 </html>
