@@ -4,8 +4,8 @@
     "name": "Murango",
     "description": "",
     "price": 100.99,
-    "stockQuantity": 999,
-    "soldQuantity": 80,
+    "stockQuantity": 1000,
+    "soldQuantity": 999,
     "imageUrl": "\\img\\products\\product_1719590137973.jpeg"
   },
   {
@@ -16,5 +16,14 @@
     "stockQuantity": 700,
     "soldQuantity": 0,
     "imageUrl": "\\img\\products\\product_1719598020260.jpeg"
+  },
+  {
+    "id": 7,
+    "name": "Banana",
+    "description": "Banana",
+    "price": 8.99,
+    "stockQuantity": 229,
+    "soldQuantity": 41,
+    "imageUrl": "\\img\\products\\product_1719599174161.jpeg"
   }
 ]

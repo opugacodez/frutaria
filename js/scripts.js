@@ -152,7 +152,9 @@ async function renderProducts() {
     const products = await fetchProducts();
     let productsHTML = '';
     products.forEach(product => {
-        productsHTML += createProductCard(product);
+        if (product.stockQuantity != 0) {
+            productsHTML += createProductCard(product);
+        }
     });
 
     productList.innerHTML = productsHTML;
