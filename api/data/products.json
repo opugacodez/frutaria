@@ -1,20 +1,20 @@
 [
   {
-    "id": 1,
-    "name": "Banana",
-    "description": "Banana Bananinha",
-    "price": 5.99,
-    "stockQuantity": 100,
-    "soldQuantity": 20,
-    "imageUrl": "/img/products/product_1719580642666.jpeg"
+    "id": 5,
+    "name": "Murango",
+    "description": "",
+    "price": 100.99,
+    "stockQuantity": 999,
+    "soldQuantity": 80,
+    "imageUrl": "\\img\\products\\product_1719590137973.jpeg"
   },
   {
-    "id": 2,
-    "name": "Murango",
-    "description": "Muranguinho",
-    "price": 68.00,
-    "stockQuantity": 100,
-    "soldQuantity": 20,
-    "imageUrl": "/img/products/product_1719583928230.jpeg"
+    "id": 6,
+    "name": "Abacaxi",
+    "description": "Abacaxi",
+    "price": 19.8,
+    "stockQuantity": 700,
+    "soldQuantity": 0,
+    "imageUrl": "\\img\\products\\product_1719598020260.jpeg"
   }
 ]

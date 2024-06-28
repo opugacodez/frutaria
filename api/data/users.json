@@ -1,10 +1,32 @@
 [
-    {
-        "id": 1,
-        "admin": true,
-        "name": "Richard",
-        "lastname": "",
-        "email": "richardbarros@duck.com",
-        "password": "senha123"
-    }
+  {
+    "id": 1,
+    "admin": true,
+    "name": "Richard",
+    "lastname": "",
+    "email": "richardbarros@duck.com",
+    "password": "senha123"
+  },
+  {
+    "id": 2,
+    "name": "Teste",
+    "lastname": "Puga",
+    "email": "teste@gmail.com",
+    "phone": "169999999999",
+    "password": "senha321",
+    "cep": "14000-000",
+    "address": "Rua José Bezerra",
+    "number": "1075"
+  },
+  {
+    "id": 3,
+    "name": "Teste2",
+    "lastname": "Teste 2",
+    "email": "teste2@gmail.com",
+    "phone": "169999999999",
+    "password": "viva",
+    "cep": "14000-000",
+    "address": "Rua José Bezerra",
+    "number": "1075"
+  }
 ]

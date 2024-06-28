@@ -41,8 +41,74 @@ async function login() {
         $('#loginModal').modal('hide');
         hideEntrarButton();
         updateUI();
+        window.location.reload();
     } catch (error) {
         console.error('Erro ao fazer login:', error);
+    }
+}
+
+// Função para cadastrar um novo usuário
+async function createUser(event) {
+    event.preventDefault(); // Evita o envio padrão do formulário
+
+    // Captura dos dados do formulário
+    const name = document.getElementById('name').value;
+    const lastname = document.getElementById('lastname').value;
+    const email = document.getElementById('email').value;
+    const phone = document.getElementById('phone').value;
+    const newPassword = document.getElementById('newPassword').value;
+    const confirmNewPassword = document.getElementById('confirmNewPassword').value;
+    const cep = document.getElementById('cep').value;
+    const address = document.getElementById('address').value;
+    const number = document.getElementById('number').value;
+
+    // Validação simples dos campos (pode ser expandida conforme necessário)
+    if (!name || !email || !newPassword || !confirmNewPassword || !cep || !address || !number) {
+        alert('Por favor, preencha todos os campos obrigatórios.');
+        return;
+    }
+
+    if (newPassword !== confirmNewPassword) {
+        alert('As senhas não coincidem.');
+        return;
+    }
+
+    // Objeto com os dados do novo usuário
+    const newUser = {
+        name,
+        lastname,
+        email,
+        phone,
+        password: newPassword, // Renomeando para 'password' para combinar com a API
+        cep,
+        address,
+        number
+    };
+
+    try {
+        const response = await fetch(`${apiUrl}/users`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(newUser),
+        });
+
+        if (!response.ok) {
+            throw new Error('Erro ao cadastrar usuário.');
+        }
+
+        const user = await response.json();
+        currentUser = user;
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        $('#signupModal').modal('hide');
+        hideEntrarButton();
+        updateUI();
+        alert('Usuário cadastrado com sucesso!');
+        window.location.href = 'index.html';
+    } catch (error) {
+        console.error('Erro ao cadastrar usuário:', error);
+        alert('Erro ao cadastrar usuário. Por favor, tente novamente.');
     }
 }
 
@@ -99,7 +165,7 @@ function createProductRow(product) {
             <th scope="row">${product.id}</th>
             <td>${product.name}</td>
             <td>${product.description}</td>
-            <td>${product.price}</td>
+            <td>${formatCurrency(product.price)}</td>
             <td>${product.stockQuantity}</td>
             <td>${product.soldQuantity}</td>
             <td>
@@ -173,24 +239,19 @@ async function saveEditedProduct() {
     const productStockQuantity = document.getElementById('editProductStockQuantity').value;
     const productSoldQuantity = document.getElementById('editProductSoldQuantity').value;
 
-    const formDataUpdate = new FormData();
-    formDataUpdate.append('name', productName);
-    formDataUpdate.append('description', productDescription);
-    formDataUpdate.append('price', productPrice);
-    formDataUpdate.append('stockQuantity', productStockQuantity);
-    formDataUpdate.append('soldQuantity', productSoldQuantity);
-    // Adicionar a imagem, se necessário
-    const productImageInput = document.getElementById('editProductImage');
-    if (productImageInput) {
-        if (productImageInput.files.length > 0) {
-            formDataUpdate.append('productImage', productImageInput.files[0]);
-        }
-    }
-
     try {
         const response = await fetch(`${apiUrl}/products/${productId}`, {
             method: 'PUT',
-            body: formDataUpdate
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: productName,
+                description: productDescription,
+                price: productPrice,
+                stockQuantity: productStockQuantity,
+                soldQuantity: productSoldQuantity
+            })
         });
 
         if (!response.ok) {
@@ -207,6 +268,8 @@ async function saveEditedProduct() {
         console.error('Erro ao salvar produto:', error);
     }
 }
+
+
 
 // Função para adicionar um novo produto
 async function addProduct() {
@@ -324,10 +387,15 @@ async function renderCartItems() {
             cart.items.forEach(item => {
                 const cartItemHTML = `
                     <div class="cart-item">
-                        <img src="${`G:/Meus%20Projetos/frutaria/api/public${item.imageUrl.replace(/\\/g, '/')}`}" alt="${item.name}" style="width: 25%;">
+                        <img src="${item.imageUrl}" alt="${item.name}" style="width: 25%;">
                         <div class="cart-item-info">
                             <h6>${item.name}</h6>
-                            <p class="cart-item-price">${item.price}</p>
+                            <p class="cart-item-price">${formatCurrency(item.price)}</p>
+                            <div class="cart-item-actions">
+                                <p>Quantidade: ${item.quantity}
+                                <button class="btn btn-outline-danger btn-sm ms-2" onclick="removeItemFromCart(${item.id})">Excluir</button>
+                                </p>
+                            </div>
                         </div>
                     </div>
                 `;
@@ -343,6 +411,22 @@ async function renderCartItems() {
     }
 }
 
+// Função para remover item do carrinho
+async function removeItemFromCart(itemId) {
+    try {
+        const response = await fetch(`${apiUrl}/carts/${currentUser.id}/items/${itemId}`, {
+            method: 'DELETE',
+        });
+        if (!response.ok) {
+            throw new Error('Erro ao excluir item do carrinho.');
+        }
+        // Atualiza a lista de itens do carrinho após a exclusão
+        renderCartItems();
+    } catch (error) {
+        console.error('Erro ao excluir item do carrinho:', error);
+    }
+}
+
 // Função para atualizar o resumo da compra
 function updateCheckoutSummary(cart) {
     const checkoutSummary = document.querySelector('.checkout-summary');
@@ -350,7 +434,7 @@ function updateCheckoutSummary(cart) {
         <h6>Resumo da compra</h6>
         <div class="d-flex justify-content-between">
             <p>Subtotal</p>
-            <p>${formatCurrency(cart.subtotal)}</p>
+            <p>${formatCurrency(cart.total_amount)}</p>
         </div>
         <div class="d-flex justify-content-between">
             <p>Entrega</p>
@@ -358,7 +442,7 @@ function updateCheckoutSummary(cart) {
         </div>
         <div class="d-flex justify-content-between">
             <h6>Total</h6>
-            <h6>${formatCurrency(cart.total)}</h6>
+            <h6>${formatCurrency(cart.total_amount)}</h6>
         </div>
         <p>Cartão de Crédito</p>
         <div class="container" style="padding-bottom: 10px;">
@@ -369,8 +453,80 @@ function updateCheckoutSummary(cart) {
                 </div>
             </div>
         </div>
-        <button class="btn btn-primary">Finalizar a compra</button>
+        <button class="btn btn-primary" onclick="processPayment(${cart.id})">Finalizar a compra</button>
     `;
+}
+
+// Função para simular o processamento do pagamento
+function processPayment(cartId) {
+    alert('Pagamento concluído com sucesso!');
+    updateStock(cartId);
+    clearCartAfterPurchase(cartId);
+}
+
+// Função para remover todos os itens do carrinho após finalizar a compra
+function clearCartAfterPurchase(cartId) {
+    const url = `http://localhost:3000/carts/${cartId}/items`;
+
+    fetch(url, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro ao limpar carrinho após compra.');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Itens do carrinho removidos com sucesso após a compra:', data);
+    })
+    .catch(error => {
+        console.error('Erro ao limpar carrinho após compra:', error);
+    });
+
+    window.location.reload();
+}
+
+
+// Função para atualizar a quantidade dos produtos em estoque
+function updateStock(cartId) {
+    fetch(`${apiUrl}/carts/${cartId}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(cartItems => {
+        // Iterar sobre os itens do carrinho e reduzir a quantidade em estoque
+        cartItems.items.forEach(item => {
+            fetch(`${apiUrl}/products/${item.id}`, {
+                method: 'PATCH', // Método PATCH para atualizar parcialmente o recurso
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    quantity: item.quantity,
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro ao atualizar estoque do produto.');
+                }
+                // Atualização do estoque realizada com sucesso
+                console.log(`Estoque do produto ${item.name} atualizado.`);
+            })
+            .catch(error => {
+                console.error('Erro ao atualizar estoque do produto:', error);
+            });
+        });
+    })
+    .catch(error => {
+        console.error('Erro ao obter itens do carrinho para atualizar estoque:', error);
+    });
 }
 
 // Função utilitária para formatar moeda
@@ -384,7 +540,7 @@ async function addToCart(productId, productName, productPrice, productImageUrl) 
         const newItem = {
             id: productId,
             name: productName,
-            price: productPrice,
+            price: parseFloat(productPrice.replace(",", ".")),
             quantity: 1, // Definir a quantidade inicial
             imageUrl: productImageUrl
         };
@@ -421,7 +577,7 @@ function createProductCard(product) {
                 </div>
                 <div class="text-center p-4">
                     <a class="d-block h5 mb-2" href="#">${product.name}</a>
-                    <span class="text-primary">${product.price}</span>
+                    <span class="text-primary">${formatCurrency(product.price)}</span>
                 </div>
                 <div class="d-flex border-top">
                     <small class="w-50 text-center border-end py-2">
