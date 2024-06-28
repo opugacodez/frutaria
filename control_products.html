@@ -65,7 +65,8 @@
                         </button>
                     </div>
                     <div style="padding-left: 20px;">
-                        <button type="button" id="loggedInButtons" class="btn btn-danger" onclick="logout()">Logout</button>
+                        <button type="button" id="loggedInButtons" class="btn btn-danger"
+                            onclick="logout()">Logout</button>
                     </div>
                 </div>
             </div>
@@ -83,13 +84,15 @@
             <div class="row g-5 justify-content-center" style="padding-bottom: 20px;">
                 <div class="col-lg-7 col-md-12 wow fadeInUp" data-wow-delay="0.5s">
                     <div class="input-group">
-                        <input id="searchInput" type="text" class="form-control" placeholder="Pesquisar" aria-label="Pesquisar">
+                        <input id="searchInput" type="text" class="form-control" placeholder="Pesquisar"
+                            aria-label="Pesquisar">
                         <button id="btnFilter" class="btn btn-outline-secondary" type="button">Filtrar</button>
-                        <button class="btn btn-outline-primary" type="button" data-bs-toggle="modal" data-bs-target="#addProductModal">Adicionar</button>
+                        <button class="btn btn-outline-primary" type="button" data-bs-toggle="modal"
+                            data-bs-target="#addProductModal">Adicionar</button>
                     </div>
                 </div>
-            </div>            
-    
+            </div>
+
             <div class="row g-5 justify-content-center">
                 <div class="col-lg-7 col-md-12 wow fadeInUp" data-wow-delay="0.5s">
                     <table class="table">
@@ -101,7 +104,7 @@
                                 <th scope="col">Preço</th>
                                 <th scope="col">QTD Estoque</th>
                                 <th scope="col">QTD Vendido</th>
-                                <th scope="col"></th>
+                                <th scope="col">Ações</th>
                             </tr>
                         </thead>
                         <tbody id="productTableBody">
@@ -112,7 +115,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- Contact End -->
 
     <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
@@ -153,18 +156,14 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form id="addProductForm">
                         <div class="mb-3">
                             <label for="productImage" class="form-label">Foto</label>
-                            <input type="file" class="form-control" id="productImage">
-                        </div>
-                        <div class="mb-3">
-                            <label for="productId" class="form-label">ID</label>
-                            <input type="text" class="form-control" id="productId">
+                            <input type="file" class="form-control" id="productImage" accept="image/*">
                         </div>
                         <div class="mb-3">
                             <label for="productName" class="form-label">Nome</label>
-                            <input type="text" class="form-control" id="productName">
+                            <input type="text" class="form-control" id="productName" required>
                         </div>
                         <div class="mb-3">
                             <label for="productDescription" class="form-label">Descrição</label>
@@ -172,74 +171,94 @@
                         </div>
                         <div class="mb-3">
                             <label for="productPrice" class="form-label">Preço</label>
-                            <input type="text" class="form-control" id="productPrice">
+                            <input type="text" class="form-control" id="productPrice" required>
                         </div>
                         <div class="mb-3">
                             <label for="productStockQuantity" class="form-label">Quantidade em Estoque</label>
-                            <input type="number" class="form-control" id="productStockQuantity">
+                            <input type="number" class="form-control" id="productStockQuantity" required>
                         </div>
                         <div class="mb-3">
                             <label for="productSoldQuantity" class="form-label">Quantidade Vendida</label>
-                            <input type="number" class="form-control" id="productSoldQuantity">
+                            <input type="number" class="form-control" id="productSoldQuantity" required>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                    <button type="button" class="btn btn-primary">Salvar</button>
+                    <button type="button" class="btn btn-primary" onclick="addProduct()">Salvar</button>
                 </div>
             </div>
         </div>
     </div>
 
+
+    <!-- Modal de Edição de Produto -->
     <div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel"
         aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editProductModalLabel">Detalhes Produto</h5>
+                    <h5 class="modal-title" id="editProductModalLabel">Editar Produto</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form id="editProductForm">
+                        <input type="hidden" id="editProductId" value="">
                         <div class="mb-3">
                             <label for="productImage" class="form-label">Foto</label>
-                            <input type="file" class="form-control" id="productImage">
+                            <input type="file" class="form-control" id="productImage" accept="image/*">
                         </div>
                         <div class="mb-3">
-                            <label for="productId" class="form-label">ID</label>
-                            <input type="text" class="form-control" id="productId">
+                            <label for="editProductName" class="form-label">Nome</label>
+                            <input type="text" class="form-control" id="editProductName" required>
                         </div>
                         <div class="mb-3">
-                            <label for="productName" class="form-label">Nome</label>
-                            <input type="text" class="form-control" id="productName">
+                            <label for="editProductDescription" class="form-label">Descrição</label>
+                            <textarea class="form-control" id="editProductDescription" rows="3"></textarea>
                         </div>
                         <div class="mb-3">
-                            <label for="productDescription" class="form-label">Descrição</label>
-                            <textarea class="form-control" id="productDescription" rows="3"></textarea>
+                            <label for="editProductPrice" class="form-label">Preço</label>
+                            <input type="text" class="form-control" id="editProductPrice" required>
                         </div>
                         <div class="mb-3">
-                            <label for="productPrice" class="form-label">Preço</label>
-                            <input type="text" class="form-control" id="productPrice">
+                            <label for="editProductStockQuantity" class="form-label">QTD Estoque</label>
+                            <input type="number" class="form-control" id="editProductStockQuantity" required>
                         </div>
                         <div class="mb-3">
-                            <label for="productStockQuantity" class="form-label">Quantidade em Estoque</label>
-                            <input type="number" class="form-control" id="productStockQuantity">
-                        </div>
-                        <div class="mb-3">
-                            <label for="productSoldQuantity" class="form-label">Quantidade Vendida</label>
-                            <input type="number" class="form-control" id="productSoldQuantity">
+                            <label for="editProductSoldQuantity" class="form-label">QTD Vendido</label>
+                            <input type="number" class="form-control" id="editProductSoldQuantity" required>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                    <button type="button" class="btn btn-primary">Salvar</button>
+                    <button type="button" class="btn btn-primary" onclick="saveEditedProduct()">Salvar</button>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Modal de Confirmação de Exclusão de Produto -->
+    <div class="modal fade" id="deleteProductModal" tabindex="-1" aria-labelledby="deleteProductModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteProductModalLabel">Confirmar Exclusão</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Deseja realmente excluir este produto?</p>
+                    <!-- Input hidden para armazenar o ID do produto a ser deletado -->
+                    <input type="hidden" id="deleteProductId">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" onclick="deleteProduct()">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Google Map Start -->
     <!-- <div class="container-xxl px-0 wow fadeIn" data-wow-delay="0.1s" style="margin-bottom: -6px;">
