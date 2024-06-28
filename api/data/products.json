@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "name": "Banana",
+    "description": "Banana Bananinha",
+    "price": 5.99,
+    "stockQuantity": 100,
+    "soldQuantity": 20,
+    "imageUrl": "/img/products/product_1719580642666.jpeg"
+  },
+  {
+    "id": 2,
+    "name": "Murango",
+    "description": "Muranguinho",
+    "price": 68.00,
+    "stockQuantity": 100,
+    "soldQuantity": 20,
+    "imageUrl": "/img/products/product_1719583928230.jpeg"
+  }
+]

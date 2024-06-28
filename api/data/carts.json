@@ -1,0 +1,25 @@
+[
+  {
+    "id": 1,
+    "userId": 1,
+    "items": [
+      {
+        "id": 1,
+        "name": "Banana",
+        "description": "Banana Bananinha",
+        "price": 5.99,
+        "quantity": 3,
+        "imageUrl": "/img/products/product_1719580642666.jpeg"
+      },
+      {
+        "id": 2,
+        "name": "Murango",
+        "description": "Muranguinho",
+        "price": 68.00,
+        "quantity": 1,
+        "imageUrl": "/img/products/product_1719583928230.jpeg"
+      }
+    ],
+    "total_amount": 0
+  }
+]

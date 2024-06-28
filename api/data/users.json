@@ -1,0 +1,10 @@
+[
+    {
+        "id": 1,
+        "admin": true,
+        "name": "Richard",
+        "lastname": "",
+        "email": "richardbarros@duck.com",
+        "password": "senha123"
+    }
+]
